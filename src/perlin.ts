@@ -25,16 +25,16 @@ export function noiseFunction1(x: number) {
 }
 
 export function noise1(x: number, wavelength: number, amplitude: number, octaves: number = 1) {
-  let acumNoise = 0;
-  let acumWavelength = wavelength;
-  let acumAmplitude = amplitude;
+  let accNoise = 0;
+  let accWavelength = wavelength;
+  let accAmplitude = amplitude;
 
   for (let i = 0; i < octaves; i++) {
-    const frequency = 1 / acumWavelength;
-    acumNoise += noiseFunction1(x * frequency) * acumAmplitude;
-    acumWavelength *= 0.5;
-    acumAmplitude *= 0.5;
+    const frequency = 1 / accWavelength;
+    accNoise += noiseFunction1(x * frequency) * accAmplitude;
+    accWavelength *= 0.5;
+    accAmplitude *= 0.5;
   }
 
-  return acumNoise;
+  return accNoise;
 }
