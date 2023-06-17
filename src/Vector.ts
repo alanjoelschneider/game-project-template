@@ -104,7 +104,34 @@ export default class Vector {
     return Math.atan2(this.y, this.x);
   }
 
+  // Debug methods
   public toString(): string {
     return `{ x: ${this.x}, y: ${this.y} }`;
+  }
+
+  public render(ctx: CanvasRenderingContext2D, color: string) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.rotate(this.direction());
+    const length = this.length();
+    ctx.lineTo(length, 0);
+    ctx.lineTo(length - length * 0.2, -length * 0.2);
+    ctx.moveTo(length, 0);
+    ctx.lineTo(length - length * 0.2, length * 0.2);
+    ctx.strokeStyle = color;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  public renderPoint(ctx: CanvasRenderingContext2D, color: string, radius: number = 1) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
   }
 }
