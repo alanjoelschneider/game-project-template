@@ -1,3 +1,12 @@
+import { noise1 } from './perlin';
+import RangeControl from './RangeControl';
+
+const controls = <HTMLElement>document.getElementById('controls');
+
+const octaves = new RangeControl(1, 20, 1, controls);
+const wavelength = new RangeControl(1, 5000, 0.1, controls);
+const amplitude = new RangeControl(1, 300, 1, controls);
+
 type Context = CanvasRenderingContext2D;
 
 const WIDTH = 800;
@@ -15,6 +24,8 @@ document.body.appendChild(canvas);
 const mouse = { x: 0, y: 0 };
 const pressing: { [key: string]: number } = {};
 
+let offsetX = 0;
+
 function update(dt: number, fps: number, elapsedTime?: number) {
   if (pressing['Enter']) {
     console.log('Pressing Enter');
@@ -28,11 +39,17 @@ function render(dt: number, fps: number) {
   ctx.fillText('Delta time: ' + dt.toString(), 2, 20);
   ctx.fillText(`Mouse { x: ${mouse.x.toString()}, y: ${mouse.y.toString()} }`, 2, 30);
 
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('Game project template ', WIDTH / 2, HEIGHT / 2);
-  ctx.restore();
+  ctx.beginPath();
+  ctx.moveTo(0, HEIGHT);
+  for (let x = 0; x <= WIDTH; x += 1) {
+    const y = noise1(offsetX + x, wavelength.value, amplitude.value, octaves.value);
+    ctx.lineTo(x, HEIGHT / 2 + y);
+  }
+  ctx.lineTo(WIDTH, HEIGHT);
+  ctx.strokeStyle = '#FFF';
+  ctx.stroke();
+
+  offsetX += 100 * dt;
 }
 
 function clear(ctx: Context) {

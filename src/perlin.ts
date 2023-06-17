@@ -18,8 +18,23 @@ function fade(t: number) {
   return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
-export default function noise1(x: number) {
+export function noiseFunction1(x: number) {
   const t = x % 255;
   const percent = t - ~~t;
-  return lerp(fade(percent), perm[~~t], perm[~~t + 1]) / 256;
+  return (lerp(fade(percent), perm[~~t], perm[~~t + 1]) / 256) * 2 - 1;
+}
+
+export function noise1(x: number, wavelength: number, amplitude: number, octaves: number = 1) {
+  let acumNoise = 0;
+  let acumWavelength = wavelength;
+  let acumAmplitude = amplitude;
+
+  for (let i = 0; i < octaves; i++) {
+    const frequency = 1 / acumWavelength;
+    acumNoise += noiseFunction1(x * frequency) * acumAmplitude;
+    acumWavelength *= 0.5;
+    acumAmplitude *= 0.5;
+  }
+
+  return acumNoise;
 }

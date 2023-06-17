@@ -19,6 +19,14 @@ export function vectorFromAngle(angle: number, length: number) {
   return { x: Math.cos(angle) * length, y: Math.sin(angle) * length };
 }
 
+export function distance(x1: number, y1: number, x2: number, y2: number) {
+  const dx = x1 - x2;
+  const dy = y1 - y2;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+export function dotProduct(x1: number, y1: number, x2: number, y2: number) {}
+
 export function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(value, max));
 }
