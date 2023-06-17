@@ -48,3 +48,7 @@ export function random(min: number, max: number, step: number = 1) {
 export function randomPick(array: any[]) {
   return array[~~(Math.random() * array.length)];
 }
+
+export function to1D(x: number, y: number, width: number) {
+  return y * width + x;
+}
