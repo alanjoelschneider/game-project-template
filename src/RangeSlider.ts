@@ -1,4 +1,4 @@
-export default class RangeControl {
+export default class RangeSlider {
   public value: number = 0;
   private element: HTMLInputElement;
 
