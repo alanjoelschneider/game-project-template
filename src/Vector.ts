@@ -58,6 +58,13 @@ export default class Vector {
     return new Vector(-this.x, -this.y);
   }
 
+
+  public perp(): Vector {
+    const length = this.length();
+    if (length === 0) return Vector.zero();
+    return new Vector(this.y * length, -this.x * length);
+  }
+
   public rotate(angle: number): Vector {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
@@ -66,7 +73,7 @@ export default class Vector {
     return new Vector(x, y);
   }
 
-  public rotateAbout(center: Vector, angle: number) {
+  public rotateAbout(center: Vector, angle: number): Vector {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
     const dx = this.x - center.x;
@@ -84,6 +91,13 @@ export default class Vector {
 
   public angleBetween(v: Vector): number {
     return Math.atan2(v.y - this.y, v.x - this.x);
+  }
+
+  public project(v: Vector): number {
+    const length = this.length();
+    const vLength = v.length();
+    if (length === 0 || vLength === 0) return 0;
+    return (this.x * v.x + this.y * v.y) / vLength;
   }
 
   public dot(v: Vector): number {
