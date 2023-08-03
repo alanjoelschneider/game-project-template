@@ -4,6 +4,11 @@ export interface TextureAtlas {
   [name: string]: { left: number; top: number; width: number; height: number; rotation: number };
 }
 
+export interface Animation {
+  names: string[];
+  fps: number;
+}
+
 export class Spritesheet {
   private image: HTMLImageElement;
 
@@ -21,5 +26,18 @@ export class Spritesheet {
     ctx.imageSmoothingEnabled = false; // Avoids smoothing on rotation
     ctx.drawImage(this.image, left, top, width, height, -width * 0.5, -height * 0.5, width, height);
     ctx.restore();
+  }
+
+  animation(
+    ctx: CanvasRenderingContext2D,
+    elapsedTime: number,
+    x: number,
+    y: number,
+    rotation: number,
+    animation: Animation
+  ) {
+    const names = animation.names;
+    const name = names[~~((elapsedTime * animation.fps) % names.length)];
+    this.render(ctx, name, x, y, rotation);
   }
 }
